@@ -1,0 +1,42 @@
+{
+    "name": "Python Development",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "python.linting.pylintEnabled": true,
+                "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
+                "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
+                "python.formatting.yapfPath": "/usr/local/py-utils/bin/yapf",
+                "python.linting.banditPath": "/usr/local/py-utils/bin/bandit",
+                "python.linting.flake8Path": "/usr/local/py-utils/bin/flake8",
+                "python.linting.mypyPath": "/usr/local/py-utils/bin/mypy",
+                "python.linting.pycodestylePath": "/usr/local/py-utils/bin/pycodestyle",
+                "python.linting.pydocstylePath": "/usr/local/py-utils/bin/pydocstyle",
+                "python.linting.pylintPath": "/usr/local/py-utils/bin/pylint",
+                "editor.formatOnSave": true,
+                "editor.codeActionsOnSave": {
+                    "source.organizeImports": true
+                }
+            },
+            "extensions": ["ms-python.python", "ms-python.vscode-pylance"]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "installTools": true,
+            "version": "3.10"
+        },
+        "ghcr.io/devcontainers/features/docker-from-docker:1": {},
+        "ghcr.io/devcontainers/features/aws-cli:1": {
+            "version": "latest"
+        }
+    },
+    "postCreateCommand": "pip install uv && pip install --user -r requirements.txt || echo 'No requirements.txt found'",
+    "remoteUser": "vscode",
+    "mounts": [
+        "source=/Users/${localEnv:USER}/.aws,target=/home/vscode/.aws,type=bind,consistency=cached"
+    ]
+}

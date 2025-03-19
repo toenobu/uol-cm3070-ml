@@ -1,0 +1,27 @@
+.PHONY: create-tf-bucket configure-tf-bucket create-dynamodb tag-dynamodb start-notebook stop-notebook edit-secret all-tf-setup
+
+# Variables
+REGION := us-east-1
+programboy-cm3070-foobarfoobarfoobar
+programboy-cm3070-foobarfoobarfoobartf
+
+# S3 Bucket Creation and Configuration
+create-tf-bucket:
+	aws s3api create-bucket --region $(REGION) --profile $(PROFILE) \
+	--bucket $(BUCKET)
+
+block-public-access:
+	aws s3api put-public-access-block --region $(REGION) --profile $(PROFILE) \
+	--bucket $(BUCKET) --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+
+add-tagging:
+	aws s3api put-bucket-tagging --region $(REGION) --profile $(PROFILE) \
+	--bucket $(BUCKET) --tagging 'TagSet=[{Key=Product,Value=programboy-main},{Key=awscli,Value=true}]'
+
+add-encryption:
+	aws s3api put-bucket-encryption --region $(REGION) --profile $(PROFILE) \
+	--bucket $(BUCKET) --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}, "BucketKeyEnabled": true}]}'
+
+enable-versioning:
+	aws s3api put-bucket-versioning --region $(REGION) --profile $(PROFILE) \
+	--bucket $(BUCKET) --versioning-configuration Status=Enabled

@@ -47,7 +47,7 @@ resource "aws_lambda_function" "serverless_lambda" {
   memory_size = 2048
 
   ephemeral_storage {
-    size = 2048 # Min 512 MB and the Max 10240 MB
+    size = 3072 # Min 512 MB and the Max 10240 MB
   }
 
   tags = {

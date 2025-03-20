@@ -140,7 +140,7 @@ def handler(event, context):
     for i, (score, label) in enumerate(zip(scores, retrieved_examples['label'])):
         results.append({
             'score': float(score),  # Convert numpy float to Python float for JSON serialization
-            'label': label,
+            'label': get_disease_name(label),
             'rank': i + 1
         })
 
@@ -203,6 +203,34 @@ def get_image(bucket, key, s3_client):
     except Exception as e:
         logger.error(f"Error loading image from S3: {str(e)}")
         raise
+
+
+
+# Disease mapping dictionary
+DISEASE_MAPPING = {
+    '0': "Bacterial spot",
+    '1': "Early blight",
+    '2': "Late blight",
+    '3': "Leaf Mold",
+    '4': "Septoria leaf spot",
+    '5': "Tomato Yellow Leaf Curl Virus",
+    '6': "Tomato mosaic virus",
+    '7': "healthy"
+}
+
+def get_disease_name(disease_key):
+    """
+    Convert a disease key to its corresponding name.
+
+    Args:
+        disease_key : The disease identifier
+
+    Returns:
+        str: The name of the disease, or "Unknown" if not found
+    """
+
+    # Return the disease name or "Unknown" if not in mapping
+    return DISEASE_MAPPING.get(disease_key, "Unknown")
 
 if __name__ == "__main__":
     # For local testing

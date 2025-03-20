@@ -23,7 +23,7 @@ tokenizer = None
 dataset = None
 s3_client = None
 
-BUCKET_NAME = 'programboy-sagemaker-example'
+programboy-cm3070-foobarfoobarfoobarml
 
 def init_resources():
     global model, processor, tokenizer, dataset, s3_client
@@ -38,41 +38,49 @@ def init_resources():
     logger.info(f"Temporary directory created at: {tmp_dir}")
     print(f"Temporary directory created at: {tmp_dir}")
 
+    # Define file paths for dataset components
+    dataset_dir = "dataset"
+    index_dir = "index"
+
+    # Dataset files to download
     ds_files = [
-        'ds/data-00000-of-00001.arrow',
-        'ds/dataset_info.json',
-        'ds/state.json'
+        f'{dataset_dir}/data-00000-of-00001.arrow',
+        f'{dataset_dir}/dataset_info.json',
+        f'{dataset_dir}/state.json'
     ]
 
-    # Download FAISS indexes from S3
+    # FAISS index files to download
     faiss_files = [
-        'index/embeddings.faiss',
-        'index/image_embeddings.faiss'
+        f'{index_dir}/embeddings.faiss',
+        f'{index_dir}/image_embeddings.faiss'
     ]
 
-    # Download dataset and embeddings using S3 client
-    # Create directories if they don't exist
-    ds_dir = f"{tmp_dir}/ds"
-    indexes_dir = f"{tmp_dir}/index"
-    os.makedirs(ds_dir, exist_ok=True)
-    os.makedirs(indexes_dir, exist_ok=True)
+    # Create local directories for downloads
+    local_ds_dir = f"{tmp_dir}/{dataset_dir}"
+    local_index_dir = f"{tmp_dir}/{index_dir}"
+    os.makedirs(local_ds_dir, exist_ok=True)
+    os.makedirs(local_index_dir, exist_ok=True)
 
-    # List and download all objects with the dataset prefix
-    for ds_file in ds_files:
-        s3_key = f"example/{ds_file}"
-        local_path = f"{ds_dir}/{os.path.basename(ds_file)}"
-        s3_client.download_file(bucket_name, s3_key, local_path)
+    # Download dataset files from S3
+    logger.info(f"Downloading dataset files from {bucket_name}")
+    for file_path in ds_files:
+        filename = os.path.basename(file_path)
+        local_path = f"{local_ds_dir}/{filename}"
+        logger.info(f"Downloading {file_path} to {local_path}")
+        s3_client.download_file(bucket_name, file_path, local_path)
 
-    # Download FAISS index files with specified prefix
-    for faiss_file in faiss_files:
-        s3_key = f"example/{faiss_file}"
-        local_path = f"{indexes_dir}/{os.path.basename(faiss_file)}"
-        s3_client.download_file(bucket_name, s3_key, local_path)
+    # Download FAISS index files from S3
+    logger.info(f"Downloading FAISS index files from {bucket_name}")
+    for file_path in faiss_files:
+        filename = os.path.basename(file_path)
+        local_path = f"{local_index_dir}/{filename}"
+        logger.info(f"Downloading {file_path} to {local_path}")
+        s3_client.download_file(bucket_name, file_path, local_path)
 
     # Load the dataset and FAISS indexes
-    dataset = load_from_disk(ds_dir)
-    dataset.load_faiss_index('embeddings', f"{indexes_dir}/embeddings.faiss")
-    dataset.load_faiss_index('image_embeddings', f"{indexes_dir}/image_embeddings.faiss")
+    dataset = load_from_disk(local_ds_dir)
+    dataset.load_faiss_index('embeddings', f"{local_index_dir}/embeddings.faiss")
+    dataset.load_faiss_index('image_embeddings', f"{local_index_dir}/image_embeddings.faiss")
 
     model_dir = f"{tmp_dir}/model"
     processor_dir = f"{tmp_dir}/processor"
@@ -129,10 +137,10 @@ def handler(event, context):
     # Process results
     logger.info(f"retrieved_examples: {retrieved_examples}")
     results = []
-    for i, (score, image_description) in enumerate(zip(scores, retrieved_examples['image_description'])):
+    for i, (score, label) in enumerate(zip(scores, retrieved_examples['label'])):
         results.append({
             'score': float(score),  # Convert numpy float to Python float for JSON serialization
-            'label': image_description,
+            'label': label,
             'rank': i + 1
         })
 

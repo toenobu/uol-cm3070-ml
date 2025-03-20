@@ -3,8 +3,8 @@
 # I use the same VM as I used for the example-sagemaker-serveless
 VM_NAME := example-sagemaker-serveless
 
-#init:
-#	limactl start --name $(VM_NAME) docker-rootful.yaml
+init:
+	limactl start --name $(VM_NAME) docker-rootful.yaml
 
 start:
 	limactl start $(VM_NAME)

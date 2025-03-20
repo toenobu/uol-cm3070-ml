@@ -208,14 +208,14 @@ def get_image(bucket, key, s3_client):
 
 # Disease mapping dictionary
 DISEASE_MAPPING = {
-    '0': "Bacterial spot",
-    '1': "Early blight",
-    '2': "Late blight",
-    '3': "Leaf Mold",
-    '4': "Septoria leaf spot",
-    '5': "Tomato Yellow Leaf Curl Virus",
-    '6': "Tomato mosaic virus",
-    '7': "healthy"
+    0: "Bacterial spot",
+    1: "Early blight",
+    2: "Late blight",
+    3: "Leaf Mold",
+    4: "Septoria leaf spot",
+    5: "Tomato Yellow Leaf Curl Virus",
+    6: "Tomato mosaic virus",
+    7: "healthy"
 }
 
 def get_disease_name(disease_key):

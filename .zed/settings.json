@@ -1,0 +1,11 @@
+{
+    "lsp": {
+        "pyright": {
+            "settings": {
+                "python": {
+                    "pythonPath": "/workspaces/uol-cm3070-ml/serverless/.venv/bin/python"
+                }
+            }
+        }
+    }
+}

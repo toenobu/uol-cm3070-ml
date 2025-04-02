@@ -40,6 +40,8 @@ resource "aws_lambda_function" "serverless_lambda" {
   environment {
     variables = {
       STAGE = "dev"
+      X_TOMATO_HEADER_VALUE = "cm3070-api"
+      API_ENDPOINT = "toenobus-mbp.tail291715.ts.net"
     }
   }
 

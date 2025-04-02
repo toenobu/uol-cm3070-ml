@@ -155,11 +155,32 @@ def handler(event, context):
     most_likely_disease = max(disease_counts.items(), key=lambda x: x[1])[0]
     confidence_score = disease_counts[most_likely_disease] / len(results)
 
-    body = json.dumps({
-                'most_likely_disease': most_likely_disease,
-                'confidence': confidence_score,
-                'results': results
-            })
+    body_data = {
+        'most_likely_disease': most_likely_disease,
+        's3_image_path': key,
+        'score': confidence_score,
+        'results': results
+    }
+
+    body = json.dumps(body_data)
+
+    # Send the data to the endpoint specified in the environment variable
+    api_endpoint = os.environ.get('API_ENDPOINT')
+    x_tomato_header_value = os.environ.get('X_TOMATO_HEADER_VALUE')
+
+    if api_endpoint:
+        try:
+            response = requests.post(
+                api_endpoint,
+                json=body_data,
+                headers={'Content-Type': 'application/json', 'x-tomato': x_tomato_header_value}
+            )
+            logger.info(f"Data sent to API endpoint. Status code: {response.status_code}")
+        except Exception as e:
+            logger.error(f"Error sending data to API endpoint: {str(e)}")
+    else:
+        logger.warning("API_ENDPOINT environment variable not set. Data not sent to any endpoint.")
+
 
     # Return a response suitable for API Gateway
     response = {

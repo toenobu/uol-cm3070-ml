@@ -171,7 +171,7 @@ def handler(event, context):
     if api_endpoint:
         try:
             response = requests.post(
-                f"https://{api_endpoint}",
+                f"https://{api_endpoint}/inferences",
                 json=body_data,
                 headers={'Content-Type': 'application/json', 'x-tomato': x_tomato_header_value}
             )

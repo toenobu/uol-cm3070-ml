@@ -40,6 +40,8 @@ aws-sso-login:
 	aws sso login \
 		--profile $(PROFILE) \
 		--sso-session sso
+	# run this on host because using dood
+
 
 build-image:
 	uv lock
@@ -51,6 +53,7 @@ login-image:
 
 ecr-login:
 	aws ecr get-login-password --region $(REGION) --profile $(PROFILE) | docker login --username AWS --password-stdin $(ACCOUNT).dkr.ecr.$(REGION).amazonaws.com
+	# run this on host because using dood
 
 push-image:
 	docker tag $(VM_NAME):$(VERSION) $(ACCOUNT).dkr.ecr.us-east-1.amazonaws.com/$(IMAGE):$(VERSION)

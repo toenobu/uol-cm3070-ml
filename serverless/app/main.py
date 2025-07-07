@@ -140,7 +140,7 @@ def handler(event, context):
     for i, (score, label) in enumerate(zip(scores, retrieved_examples['label'])):
         results.append({
             'score': float(score),  # Convert numpy float to Python float for JSON serialization
-            'label': get_disease_name(label),
+            'label': label,
             'rank': i + 1
         })
 
@@ -156,7 +156,8 @@ def handler(event, context):
     confidence_score = disease_counts[most_likely_disease] / len(results)
 
     body_data = {
-        'most_likely_disease': most_likely_disease,
+        'most_likely_disease_label': most_likely_disease,
+        'most_likely_disease_name': get_disease_name(most_likely_disease),
         's3_image_path': key,
         'score': confidence_score,
         'results': results

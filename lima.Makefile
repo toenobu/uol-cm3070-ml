@@ -5,10 +5,12 @@ VM_NAME := example-sagemaker-serveless
 
 init:
 	limactl start --name $(VM_NAME) docker-rootful.yaml
+	docker context create lima-$(VM_NAME) --docker "host=unix:///Users/toenobu/.lima/$(VM_NAME)/sock/docker.sock"
+	docker context use lima-$(VM_NAME)
 
 start:
 	limactl start $(VM_NAME)
-	docker context use lima-example-sagemaker-serveless
+	docker context use lima-$(VM_NAME)
 
 login:
 	limactl shell $(VM_NAME)

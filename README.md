@@ -49,7 +49,7 @@ ESP32-CAM Sensors → MQTT Broker → Go MQTT Client → S3 Storage → ML Pipel
 Crop disease images set → Extract multimodal feature → FAISS Vector Index → Crop disease images set with multimodal feature index
 ```
 
-#### **Inference Pipeline Flow** (Layer 3-2)  
+#### **Inference Pipeline Flow** (Layer 3-2)
 ```
 An Image in AWS S3 Storage → Lambda ML Processor → Extract multimodal feature → Similarity Search with FAISS Vector Index → Disease Classification → Application
 ```
@@ -73,7 +73,7 @@ cd serverless && make build-image && make push-image
 make run-lambda
 ```
 
-## 🏗️ System Architecture
+## System Architecture
 
 This project implements **Layer 3 (Machine Learning)** of a comprehensive 4-layer IoT agricultural monitoring system:
 
@@ -161,14 +161,14 @@ flowchart TB
 - **Economic Optimization**: ROI-focused treatment recommendations
 - **Farmer-friendly**: Email/SMS alerts with actionable insights
 
-## 🛠️ Development Environment
+## Development
 
 ### Prerequisites
-- **DevPod**: Remote development environment
-- **Docker**: Containerization support
-- **AWS CLI**: Cloud service integration
-- **Terraform**: Infrastructure management
-- **Python 3.12+**: ML pipeline runtime
+- DevPod (remote development environment)
+- Docker (containerization support)
+- AWS CLI (cloud service integration)
+- Terraform (infrastructure management)
+- Python 3.12+ (ML pipeline runtime)
 
 ### Environment Setup
 
@@ -183,14 +183,9 @@ make reset       # Reset and restart environment
 ```bash
 # Authenticate with AWS
 make aws-sso-login
-
-# Configure environment variables
-programboy-cm3070-foobarfoobarfoobar
-export AWS_REGION=us-east-1
-export AWS_ACCOUNT_ID=195275638784
 ```
 
-## 🚀 Deployment Guide
+## Deployment
 
 ### 1. Infrastructure Deployment
 ```bash
@@ -235,7 +230,7 @@ aws logs tail /aws/lambda/cm3070-ml-serverless-lambda --follow
 aws sagemaker describe-endpoint --endpoint-name my-endpoint
 ```
 
-## 🧪 Testing & Validation
+## Testing & Validation
 
 ### Unit Tests
 ```bash
@@ -283,7 +278,7 @@ logger.info(f"Disease detected: {disease_type}", extra={
 })
 ```
 
-## 🔒 Security & Compliance
+## Security & Compliance
 
 ### Data Protection
 - **Encryption**: All data encrypted at rest (S3) and in transit (TLS)
@@ -297,7 +292,7 @@ logger.info(f"Disease detected: {disease_type}", extra={
 - **Image Storage**: 30-day retention with automatic deletion
 - **GDPR Compliance**: Data portability and deletion rights
 
-## 💰 Cost Optimization
+## Cost Optimization
 
 ### Target Economics
 - **Per-image Processing**: <$0.001 USD
@@ -310,52 +305,7 @@ logger.info(f"Disease detected: {disease_type}", extra={
 - **Auto-scaling**: Dynamic capacity based on demand
 - **Reserved Capacity**: Cost savings for predictable workloads
 
-## 🚨 Troubleshooting
-
-### Common Issues
-
-**Lambda Timeout Errors**
-```bash
-# Increase memory allocation
-aws lambda update-function-configuration \
-  --function-name cm3070-ml-serverless-lambda \
-  --memory-size 2048 \
-  --timeout 300
-```
-
-**FAISS Index Loading Failures**
-```bash
-# Verify S3 permissions
-programboy-cm3070-foobarfoobarfoobarml
-
-# Check index file integrity
-programboy-cm3070-foobarfoobarfoobarml
-python -c "import faiss; faiss.read_index('/tmp/faiss.index')"
-```
-
-**CLIP Model Memory Issues**
-```bash
-# Monitor memory usage
-watch -n 1 'free -h'
-
-# Optimize model loading
-export TRANSFORMERS_CACHE=/tmp/transformers
-export TORCH_HOME=/tmp/torch
-```
-
-### Debug Commands
-```bash
-# Stream Lambda logs
-aws logs tail /aws/lambda/cm3070-ml-serverless-lambda --follow
-
-# Check SageMaker status
-aws sagemaker list-endpoints
-
-# Validate infrastructure
-cd terraform && terraform state list
-```
-
-## 🔮 Future Enhancements
+## Future Enhancements
 
 ### Short-term Roadmap
 - [ ] **Multi-crop Support**: Extend beyond tomatoes to peppers, cucumbers
@@ -368,40 +318,3 @@ cd terraform && terraform state list
 - [ ] **Advanced AI**: Custom vision transformers for agriculture
 - [ ] **Sustainability Metrics**: Carbon footprint tracking and optimization
 - [ ] **Market Integration**: Crop pricing and yield prediction
-
-## 🤝 Contributing
-
-### Development Workflow
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push branch: `git push origin feature/amazing-feature`
-5. Open Pull Request
-
-### Code Standards
-- **Python**: Follow PEP 8, use type hints
-- **Terraform**: Use consistent naming conventions
-- **Documentation**: Update README and CLAUDE.md
-- **Testing**: Add unit tests for new features
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 📞 Support
-
-- **Documentation**: Comprehensive guides in [CLAUDE.md](CLAUDE.md)
-- **Issues**: GitHub Issues for bug reports and feature requests
-- **Academic Context**: University of London CM3070 Final Project
-
-## 🙏 Acknowledgments
-
-- **OpenAI**: CLIP model and multimodal AI research
-- **Facebook AI**: FAISS vector similarity search
-- **HuggingFace**: Transformers library and model ecosystem
-- **AWS**: Cloud infrastructure and managed AI services
-- **University of London**: Academic framework and guidance
-
----
-
-**Built with ❤️ for sustainable agriculture and small-scale farmers worldwide.**

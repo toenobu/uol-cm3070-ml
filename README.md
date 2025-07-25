@@ -57,7 +57,7 @@ An Image in AWS S3 Storage → Lambda ML Processor → Extract multimodal featur
 ## Key Features
 
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # 1. Set up development environment
@@ -117,7 +117,7 @@ flowchart TB
     G --> GA
 ```
 
-### 🎯 Performance Targets
+### Performance Targets
 
 - **Detection Accuracy**: ≥85% precision, ≥90% recall
 - **Response Time**: <5 minutes end-to-end (capture → detection → alert)
@@ -125,7 +125,7 @@ flowchart TB
 - **Scalability**: Support 100+ concurrent IoT devices
 - **Reliability**: 99.5% uptime during growing seasons
 
-## 🔬 Core ML Components
+## Core ML Components
 
 ### 1. **CLIP Multimodal Embeddings**
 - **Model**: `openai/clip-vit-base-patch16`
@@ -145,9 +145,9 @@ flowchart TB
 - **S3**: Dataset storage and FAISS index persistence
 - **ECR**: Docker image registry for deployment
 
-## 🚀 Key Features
+## Key Features
 
-### ✨ Advanced Capabilities
+### Advanced Capabilities
 - **Zero-shot Learning**: No agricultural training data required
 - **Multimodal Processing**: Vision + text understanding
 - **Real-time Inference**: Sub-5-minute disease detection
@@ -155,7 +155,7 @@ flowchart TB
 - **Scalable**: Supports multiple farms and crop types
 - **Secure**: IAM roles, encrypted secrets, VPC isolation
 
-### 🎯 Agricultural Specialization
+### Agricultural Specialization
 - **Disease-specific Patterns**: Early blight, late blight, leaf mold, etc.
 - **Environmental Context**: Weather, growth stage, location awareness
 - **Economic Optimization**: ROI-focused treatment recommendations
@@ -259,7 +259,7 @@ python -c "from transformers import AutoModel; print('Transformers working!')"
 - **Load Testing**: Simulate concurrent IoT device requests
 - **Cost Analysis**: Track AWS usage and optimization
 
-## 📊 Monitoring & Observability
+## Monitoring & Observability
 
 ### CloudWatch Metrics
 - Lambda function duration and error rates

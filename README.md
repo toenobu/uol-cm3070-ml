@@ -1,4 +1,4 @@
-# UoL CM3070 ML - Agricultural Disease Detection Platform
+# UoL CM3070 ML
 
 This repository handle the machine learning aspects of the system
 
@@ -33,7 +33,7 @@ This repository handle the machine learning aspects of the system
 ```
 
 ## Architecture
-This repository implements **Layer 3 (Machine Learning Layer)** of a 4-layer IoT agricultural monitoring system, featuring CLIP multimodal embeddings and FAISS vector similarity search for real-time plant disease detection.
+This repository implements Layer 3 (Machine Learning Layer) of a 4-layer IoT agricultural monitoring system, featuring CLIP multimodal embeddings and FAISS vector similarity search for real-time plant disease detection.
 
 ### System Overview
 
@@ -52,6 +52,50 @@ Crop disease images set → Extract multimodal feature → FAISS Vector Index �
 #### **Inference Pipeline Flow** (Layer 3-2)
 ```
 An Image in AWS S3 Storage → Lambda ML Processor → Extract multimodal feature → Similarity Search with FAISS Vector Index → Disease Classification → Application
+```
+
+### Data Flow & API Architecture
+
+```mermaid
+sequenceDiagram
+    participant ESP as ESP32-CAM
+    participant MQTT as MQTT Broker
+    participant MQTTC as GO Client
+    participant S3 as S3
+    participant ML as SageMaker ML
+    participant API as Go REST API
+    participant DB as PostgreSQL
+    participant WEB as Web Dashboard
+    participant EMAIL as Email Service
+    participant FARMER as Farmer
+
+    Note over ESP,FARMER: Real-time Disease Detection Pipeline
+
+    ESP->>MQTT: Plant Image (JPEG)
+    MQTT->>MQTTC: Binary Stream
+    MQTTC->>S3: Upload Image
+    S3->>ML: Inference Request
+    ML->>API: Inference Results
+
+    alt Disease Detected
+        API->>DB: Store Disease Record
+        API->>EMAIL: Send Alert Email
+        EMAIL->>FARMER: Disease Notification
+        API->>WEB: SSE Update
+        WEB->>FARMER: Dashboard Alert
+    else Healthy Plant
+        API->>DB: Store Healthy Record
+        API->>WEB: SSE Update
+    end
+
+    loop Every 60 seconds
+        FARMER->>WEB: Request Data
+        WEB->>API: Request Dashboard Data
+        API->>DB: Query Analytics
+        DB->>API: Return Metrics
+        API->>WEB: SSE Stream Update
+        WEB->>FARMER: SSE Stream Update
+    end
 ```
 
 ## Key Features
